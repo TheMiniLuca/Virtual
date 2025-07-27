@@ -49,6 +49,14 @@ tasks.runServer {
   minecraftVersion("1.21.5")
 }
 
+tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
+  javaLauncher = javaToolchains.launcherFor {
+    vendor = JvmVendorSpec.JETBRAINS
+    languageVersion = JavaLanguageVersion.of(21)
+  }
+  jvmArgs("-XX:+AllowEnhancedClassRedefinition")
+}
+
 tasks.register("run1_17_1", RunServer::class) {
   minecraftVersion("1.17.1")
   pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
