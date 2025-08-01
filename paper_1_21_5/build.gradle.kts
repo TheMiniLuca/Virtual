@@ -1,5 +1,5 @@
 plugins {
-  `my-conventions`
+  paper
   id("io.papermc.paperweight.userdev")
 }
 
