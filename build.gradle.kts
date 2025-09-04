@@ -11,13 +11,20 @@ plugins {
 
 java.disableAutoTargetJvm() // Allow consuming JVM 21 projects (i.e. paper_1_21_5) even though our release is 17
 
+repositories {
+  mavenLocal()
+  mavenCentral()
+  maven("https://repo.codemc.io/repository/maven-releases/")
+}
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+  compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
-    implementation(project(":paper_hooks"))
-
-    compileOnly("com.github.retrooper:packetevents-spigot:2.9.3")
-    runtimeOnly(project(":paper_1_20_4", configuration = "reobf"))
+  compileOnly(files("run/plugins/CommandAPI.jar"))
+  implementation(project(":paper_hooks"))
+  annotationProcessor("org.projectlombok:lombok:1.18.34")
+  compileOnly("org.projectlombok:lombok:1.18.34")
+  compileOnly("com.github.retrooper:packetevents-spigot:2.9.3")
+  runtimeOnly(project(":paper_1_20_4", configuration = "reobf"))
     // runtimeOnly(project(":paper_1_21_5"))
 }
 
@@ -34,14 +41,15 @@ tasks.jar {
 // Configure plugin.yml generation
 // - name, version, and description are inherited from the Gradle project.
 bukkitPluginYaml {
-  main = "my.plugin.MyPlugin"
+  main = "io.github.theminiluca.virtual.Virtual"
   load = BukkitPluginYaml.PluginLoadOrder.STARTUP
-  authors.add("Author")
-  apiVersion = "1.17"
+  authors.add("MiniLuca")
+  apiVersion = "1.20"
+  depend = listOf("packetevents", "GrimAC", "CommandAPI")
 }
 
 tasks.runServer {
-  minecraftVersion("1.21.5")
+  minecraftVersion("1.21.8")
 }
 
 tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
